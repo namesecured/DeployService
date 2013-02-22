@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="TaskBatching">
+  <PropertyGroup>
+    <SourceRoot>TestProjects\</SourceRoot>
+    <OutputRoot>..\BUILD\BuildTemp\</OutputRoot>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AllConfigurations Include="Debug configuration">
+      <Configuration>Debug</Configuration>
+    </AllConfigurations>
+
+    <AllConfigurations Include="Release configuration">
+      <Configuration>Release</Configuration>
+    </AllConfigurations>
+
+    <OutputPath Include="$(OutputRoot)One\">
+      <Path>$(OutputRoot)One\</Path>
+    </OutputPath>
+
+    <OutputPath Include="$(OutputRoot)Two\">
+      <Path>$(OutputRoot)Two\</Path>
+    </OutputPath>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Projects Include="$(SourceRoot)TestProject1.csproj" />
+    <Projects Include="$(SourceRoot)TestProject2.csproj" />
+    <Projects Include="$(SourceRoot)TestProject3.csproj" />
+  </ItemGroup>
+
+  <Target Name="TaskBatching" Outputs="%(Projects.Identity)">
+    <Message Text="=============================================="
+             Importance="high"/>
+    <Message Text="Projects: @(Projects)"/>
+    <Message Text="Configuration: %(AllConfigurations.Configuration)"/>
+    <MSBuild Projects="@(Projects)"
+             Properties="Configuration=%(AllConfigurations.Configuration)"
+             Targets="DefaultTarget"
+             ToolsVersion="4.0"
+             />
+  </Target>
+  
+</Project>
